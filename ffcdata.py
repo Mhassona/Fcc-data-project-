@@ -3,6 +3,7 @@
 
 @author: Mohamed Hassona
 """
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from urllib.request import urlretrieve
@@ -21,17 +22,18 @@ def countTrue(data):
 
 
 
+
 urlretrieve('https://raw.githubusercontent.com/freeCodeCamp/2016-new-coder-survey/master/clean-data/2016-FCC-New-Coders-Survey-Data.csv', "sheet.csv")
 df = pd.read_csv('sheet.csv', sep=',', dtype = str)
 
 
 #Are you Currently a software dev pie chart
 pieLabels = "Yes", "No"
-pieSizes =countTrue(df["IsSoftwareDev"])
+pieValues =countTrue(df["IsSoftwareDev"])
 pieColors = ['gold', 'yellowgreen']
 pieExplode = (0.1, 0)
 plt.title('Are you Currently a Software Developer?')
-plt.pie(pieSizes, explode=pieExplode, labels=pieLabels, colors=pieColors,
+plt.pie(pieValues, explode=pieExplode, labels=pieLabels, colors=pieColors,
         autopct='%1.1f%%', shadow=True, startangle=140)
  
 plt.axis('equal')
@@ -114,6 +116,38 @@ plt.xticks(jobXB, jobLabelsB, rotation='vertical')
 plt.show()
 plt.close()
 
+isSoftTrue = df["IsSoftwareDev"] == "1"
+isSoftfalse = df["IsSoftwareDev"] != "1"
+softTrueDf = df[isSoftTrue]
+softFalseDf = df[isSoftfalse]
+
+
+topLabels = ["ResourceKhanAcademy", "ResourceUdemy", "ResourceCoursera", "ResourceCodecademy", "ResourceFCC"]
+topValuesTrue = []
+topValuesFalse = []
+for label in topLabels:
+    ansT = countTrue(softTrueDf.loc[:,label])
+    topValuesTrue.append(ansT[0])
+    ansF = countTrue(softFalseDf.loc[:,label])
+    topValuesFalse.append(ansF[0])
+
+topLabels=[s.replace('Resource', '') for s in topLabels]
+XTop = np.arange(5)
+plt.bar(XTop + 0.00, topValuesTrue, color = 'b', width = 0.25, label="Software Developer")
+plt.bar(XTop + 0.25, topValuesFalse, color = 'g', width = 0.25, label="not a Software Developer")
+plt.title("Top 5 Resources Ordered by if they are a Software Developer")
+plt.xlabel("Resource")
+plt.ylabel("No. of People")
+plt.xticks(XTop, topLabels)
+plt.legend()
+plt.show()
+plt.close()
+
+
     
-    
+
+
+
+        
+
 
