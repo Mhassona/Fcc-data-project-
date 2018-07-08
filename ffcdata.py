@@ -143,11 +143,25 @@ plt.legend()
 plt.show()
 plt.close()
 
+podNames = df.columns.values.tolist()
+podNames = podNames[68:84]
+del podNames[8:10]
+podNames = [s.replace('Podcast', '') for s in podNames]
+podValues = []
+for i in range(68,84):
+    ans = countTrue(df.iloc[:,i])
+    podValues.append(ans[0])
+del podValues[8:10]
+print(podValues)
+tupPod = sorted(zip(podValues, podNames))      
+podValues, podNames = zip(*tupPod)
 
-    
 
 
-
-        
-
-
+XPod = [i for i, _ in enumerate(podNames)]
+plt.bar(XPod, podValues, color= "blue")
+plt.title("Which coding-related podcasts have you found helpful?")
+plt.xlabel("Resource")
+plt.ylabel("No. of People")
+plt.xticks(XPod, podNames, rotation='vertical')
+plt.show()
