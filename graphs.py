@@ -6,7 +6,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from urllib.request import urlretrieve
+from urllib import urlretrieve
 
 def countTrue(data):
     isTrue = 0
@@ -106,13 +106,22 @@ plt.close()
 
 jobLabelsB = jobLabels[:-1]
 jobValuesB = jobValues[:-1]
+color_list = ["green", "navy", "red", "blue", "gold", "limegreen", "maroon", "slateblue", "orange"]
 #Which one of these roles are you most interested in? without Other/NA data
 jobXB = [i for i, _ in enumerate(jobLabelsB)]
 barChart = plt.bar(jobXB, jobValuesB, color = "blue")
-plt.title("Which one of these roles are you most interested in?")
+for i in range (0,9):
+    barChart[i].set_color(color_list[i])
+    barChart[i].set_label(jobLabelsB[i])
+
+for i, y in enumerate(jobValuesB):    
+    plt.text(jobXB[i] - 0.33, y-110, y, color = "white")
+
+plt.title("Which one of these roles are you most interested in?", fontsize=20)
+plt.legend()
 plt.xlabel("Role")
 plt.ylabel("No. of People")
-plt.xticks(jobXB, jobLabelsB, rotation='vertical')
+plt.xticks(jobXB, "", rotation='vertical')
 plt.show()
 plt.close()
 
@@ -165,3 +174,6 @@ plt.xlabel("Resource")
 plt.ylabel("No. of People")
 plt.xticks(XPod, podNames, rotation='vertical')
 plt.show()
+
+
+
